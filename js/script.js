@@ -3,21 +3,40 @@
 //****************** SERIOUSLY TEST USING console.log()!!! ******************
 
 $(document).ready(function(){
-  
-  $.ajax({
-  url: "https://api.giphy.com/v1/stickers/search?q=dog&api_key=dc6zaTOxFJmzC",
-  method: "GET",
-  success: function(response) {
-       
-        console.log(response.data[0].images.fixed_width.url);
+  $('#searchButton').click(function() {
+        var searchTerm;
+        var giphyUrl;
         
-        var gif = response.data[0].images.fixed_width.url;
-        https://api.giphy.com/v1/stickers/search?q=dog&api_key=dc6zaTOxFJmzC
+        // STEP 1: Get the value of the #searchTerm input
+        // reference: http://api.jquery.com/val/
+        searchTerm = $('#searchTerm').val();
         
-        $('body').append('<img src=' + gif + '>');
+        // STEP 2: Build the URL to the Giphy API (adding your search term)
+        // reference: https://docs.google.com/presentation/d/1wXLyXW-xN64zUnK1forP7MGewFEev5PmJ73ia8qmQQo/edit#slide=id.g31f7595976_0_129
+        giphyUrl = "https://api.giphy.com/v1/stickers/search?q=" + searchTerm + "&api_key=dc6zaTOxFJmzC";
         
-  },
-});
-  
+        
+        $.ajax({
+          url: giphyUrl,
+          method: "GET",
+          success: function(response) {
+              var imageSrc;
+              var imageHtml;
+              
+              // STEP 3: Get the image src of the gif
+              // reference: https://docs.google.com/presentation/d/1wXLyXW-xN64zUnK1forP7MGewFEev5PmJ73ia8qmQQo/edit#slide=id.g3910f2de88_0_33
+              imageSrc = response.data[0].images.original.url;
+              
+              
+              
+              imageHtml= '<img src=' + imageSrc + ' >';
+              
+              // STEP 4: Generate the HTML for the img tag (using the image src from step3)
+              
+              // STEP 5: Append the image to the page
+              $("#giphy").html(imageHtml);
+          },
+        }); 
+    });
   
 });
